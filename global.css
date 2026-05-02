@@ -1,0 +1,130 @@
+/* ============================================================
+   css/global.css
+   CSS custom properties, resets, and shared utilities
+   for the Hydra P2P platform.
+============================================================ */
+
+/* ── Google Font ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+/* ── Custom Properties ───────────────────────────────────── */
+:root {
+    /* Brand */
+    --blue-primary:   #3b6ef8;
+    --blue-hover:     #2a5ce6;
+    --blue-light:     #eff3ff;
+    --blue-mid:       #dce6fd;
+
+    /* Greys */
+    --bg-page:        #eef0f6;
+    --bg-card:        #ffffff;
+    --bg-sidebar:     #ffffff;
+    --border:         #e8eaf0;
+    --border-input:   #d4d8e4;
+
+    /* Text */
+    --text-primary:   #0f1729;
+    --text-secondary: #6b7280;
+    --text-muted:     #9ca3af;
+    --text-label:     #4b5563;
+
+    /* Status */
+    --green:          #16a34a;
+    --green-light:    #dcfce7;
+    --green-text:     #15803d;
+    --red:            #dc2626;
+    --red-light:      #fee2e2;
+    --yellow:         #ca8a04;
+    --yellow-light:   #fef9c3;
+    --orange:         #ea580c;
+
+    /* Sidebar */
+    --sidebar-w:      210px;
+
+    /* Radius */
+    --radius-sm:      8px;
+    --radius-md:      12px;
+    --radius-lg:      16px;
+    --radius-xl:      24px;
+    --radius-pill:    999px;
+
+    /* Shadow */
+    --shadow-sm:      0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md:      0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg:      0 8px 32px rgba(0,0,0,0.10);
+
+    /* Font */
+    --font-sans:      'DM Sans', sans-serif;
+    --font-mono:      'DM Mono', monospace;
+}
+
+/* ── Reset ───────────────────────────────────────────────── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--bg-page);
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+    font-family: inherit;
+    border: none;
+    outline: none;
+}
+
+input, textarea, select {
+    font-family: inherit;
+    outline: none;
+    border: none;
+}
+
+ul, ol { list-style: none; }
+img    { display: block; max-width: 100%; }
+
+/* ── Shared utilities ────────────────────────────────────── */
+.text-blue    { color: var(--blue-primary); }
+.text-green   { color: var(--green); }
+.text-red     { color: var(--red); }
+.text-muted   { color: var(--text-muted); }
+.font-mono    { font-family: var(--font-mono); }
+.font-medium  { font-weight: 500; }
+.font-semibold{ font-weight: 600; }
+.font-bold    { font-weight: 700; }
+
+/* ── Auth alert ──────────────────────────────────────────── */
+.auth-alert {
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    margin-bottom: 16px;
+}
+.auth-alert p { line-height: 1.5; }
+.auth-alert + .auth-alert { margin-top: -8px; }
+
+.auth-alert--error {
+    background: var(--red-light);
+    color: var(--red);
+    border: 1px solid #fca5a5;
+}
+.auth-alert--success {
+    background: var(--green-light);
+    color: var(--green-text);
+    border: 1px solid #86efac;
+}
