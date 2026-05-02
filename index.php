@@ -18,8 +18,8 @@ unset($_SESSION['active_tab']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hydra — P2P Crypto Trading</title>
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css\global.css">
+    <link rel="stylesheet" href="css\auth.css">
 </head>
 <body>
 

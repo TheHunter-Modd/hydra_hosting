@@ -5,12 +5,13 @@
 //  Requires: config_session, dbh, auth_model, auth_view
 // ============================================================
 
-require_once 'includes/config_session.inc.php';
-require_once 'includes/dbh.inc.php';
-require_once 'includes/auth_model.inc.php';
+// __DIR__ = the includes/ folder, so we step up one level for config
+require_once __DIR__ . '/config_session.inc.php';
+require_once __DIR__ . '/dbh.inc.php';
+require_once __DIR__ . '/auth_model.inc.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit();
 }
 
@@ -37,7 +38,7 @@ if ($action === 'login') {
                 $_SESSION['user_id']       = $user['id'];
                 $_SESSION['user_name']     = $user['username'];
                 $_SESSION['user_email']    = $user['email'];
-                header('Location: dashboard.php');
+                header('Location: ../dashboard.php');
                 exit();
             }
         } catch (PDOException $e) {
@@ -49,7 +50,7 @@ if ($action === 'login') {
     if (!empty($errors)) {
         $_SESSION['auth_errors'] = $errors;
         $_SESSION['active_tab']  = 'login';
-        header('Location: index.php');
+        header('Location: ../index.php');
         exit();
     }
 }
@@ -85,7 +86,7 @@ if ($action === 'register') {
 
                 $_SESSION['auth_success'] = 'Account created! Please log in.';
                 $_SESSION['active_tab']   = 'login';
-                header('Location: index.php');
+                header('Location: ../index.php');
                 exit();
             }
         } catch (PDOException $e) {
@@ -97,11 +98,11 @@ if ($action === 'register') {
     if (!empty($errors)) {
         $_SESSION['auth_errors'] = $errors;
         $_SESSION['active_tab']  = 'register';
-        header('Location: index.php');
+        header('Location: ../index.php');
         exit();
     }
 }
 
 // Fallback
-header('Location: index.php');
+header('Location: ../index.php');
 exit();
