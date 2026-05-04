@@ -1,5 +1,6 @@
 <?php
 require_once 'includes\config_session.inc.php';
+require_once 'includes/dashboard_contr.inc.php';
 
 // Auth guard
 if (!isset($_SESSION['user_id'])) {
@@ -35,8 +36,12 @@ $tracker_time    = '03:45';
 $tracker_today   = 'Today';
 $onboarding_pct  = 42;
 
-// Last updated
-$last_updated = 'Just now';
+ $last_updated = 'Just now';
+
+// Helper function for safe HTML output
+function qc_val(array $arr, string $key): string {
+    return htmlspecialchars($arr[$key] ?? '');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -112,7 +117,7 @@ $last_updated = 'Just now';
                 </svg>
                 My Rates
             </a>
-            <a href="profile.php" class="nav-link">
+            <!--<a href="profile.php" class="nav-link">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
                      stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="8" r="4"/>
@@ -126,7 +131,7 @@ $last_updated = 'Just now';
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                 </svg>
                 Admin
-            </a>
+            </a>-->
         </nav>
 
         <!-- User profile + logout -->
@@ -155,6 +160,20 @@ $last_updated = 'Just now';
          MAIN
     ════════════════════════════════════════════════════ -->
     <main class="main">
+        <!-- Flash Messages -->
+        <?php if ($success_msg): ?>
+        <div style="background:#dcfce7;border:1px solid #86efac;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:0.9rem;color:#166534;display:flex;align-items:center;gap:10px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <strong><?= htmlspecialchars($success_msg) ?></strong>
+            <a href="rates.php" style="margin-left:auto;color:#3b82f6;font-weight:600;">View My Rates →</a>
+        </div>
+        <?php endif; ?>
+
+        <?php if ($error_msg): ?>
+        <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:0.9rem;color:#dc2626;">
+            <?= htmlspecialchars($error_msg) ?>
+        </div>
+        <?php endif; ?>
 
         <!-- Page header -->
         <div class="page-header">
@@ -299,108 +318,136 @@ $last_updated = 'Just now';
 
         </div><!-- /mid-row -->
 
-        <!-- ── Quick Calculator ───────────────────────── -->
+                <!-- ── Quick Calculator (Pure PHP) ───────────── -->
         <div class="calculator-section">
             <div class="calc-header">
                 <h2 class="calc-title">Quick Calculator</h2>
-                <div class="calc-toggle">
-                    <button class="btn-toggle btn-toggle--buy"  id="btn-buy"  onclick="setMode('buy')">Buy USDT</button>
-                    <button class="btn-toggle btn-toggle--sell" id="btn-sell" onclick="setMode('sell')">Sell USDT</button>
-                </div>
+                <form method="POST" action="" class="calc-toggle">
+                    <input type="hidden" name="action" value="quick_calc">
+                    <input type="hidden" name="constant" value="<?= qc_val($calc_inputs, 'constant') ?>">
+                    <input type="hidden" name="normal_rate" value="<?= qc_val($calc_inputs, 'normal_rate') ?>">
+                    <input type="hidden" name="cost" value="<?= qc_val($calc_inputs, 'cost') ?>">
+                    
+                    <!-- Clicking these submits the form and switches mode -->
+                    <button type="submit" name="mode" value="buy" 
+                            class="btn-toggle btn-toggle--buy <?= $calc_mode === 'buy' ? 'active' : '' ?>">
+                        Buy USDT
+                    </button>
+                    <button type="submit" name="mode" value="sell" 
+                            class="btn-toggle btn-toggle--sell <?= $calc_mode === 'sell' ? 'active' : '' ?>">
+                        Sell USDT
+                    </button>
+                </form>
             </div>
 
-            <div class="calc-inputs">
-                <div class="calc-input-group">
-                    <label>Amount (₦)</label>
-                    <input type="number" id="calc-amount" value="18000"
-                           oninput="calculate()" placeholder="e.g. 18000">
-                </div>
-                <div class="calc-input-group">
-                    <label>Rate (₦/USDT)</label>
-                    <input type="number" id="calc-rate" value="1685"
-                           oninput="calculate()" placeholder="e.g. 1685">
-                </div>
+            <?php if (!empty($calc_errors)): ?>
+            <div class="calc-errors" style="background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:0.85rem;color:#dc2626;">
+                <?php foreach ($calc_errors as $err): ?>
+                    <p>⚠ <?= htmlspecialchars($err) ?></p>
+                <?php endforeach; ?>
             </div>
+            <?php endif; ?>
 
+            <form method="POST" action="" class="calc-form-quick">
+                <input type="hidden" name="action" value="quick_calc">
+                <input type="hidden" name="mode" value="<?= htmlspecialchars($calc_mode) ?>">
+                
+                <div class="calc-inputs">
+                    <div class="calc-input-group">
+                        <label>Constant</label>
+                        <input type="number" name="constant" value="<?= qc_val($calc_inputs, 'constant') ?>" step="any" placeholder="e.g. 1.01" required>
+                    </div>
+                    <div class="calc-input-group">
+                        <label>Normal Rate (₦)</label>
+                        <input type="number" name="normal_rate" value="<?= qc_val($calc_inputs, 'normal_rate') ?>" step="any" placeholder="e.g. 1374.22" required>
+                    </div>
+                    <div class="calc-input-group">
+                        <label>Cost (₦)</label>
+                        <input type="number" name="cost" value="<?= qc_val($calc_inputs, 'cost') ?>" step="any" placeholder="e.g. 18000" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-save-rate" style="margin-bottom: 20px; width: 100%;">Calculate</button>
+            </form>
+
+            <?php if ($calc_results): ?>
             <div class="calc-results">
-                <div class="result-card result-card--default">
-                    <div class="result-card__label">USDT Quantity</div>
-                    <div class="result-card__value" id="res-usdt">10.6825</div>
+                <!-- Quantity (Base) -->
+                <div class="result-card result-card--base">
+                    <div class="result-card__label">Quantity</div>
+                    <div class="result-card__formula">
+                        (<?= qc_val($calc_inputs, 'cost') ?> × <?= qc_val($calc_inputs, 'constant') ?>) ÷ <?= qc_val($calc_inputs, 'normal_rate') ?>
+                    </div>
+                    <div class="result-card__value"><?= number_format($calc_results['quantity'], 6) ?></div>
                 </div>
-                <div class="result-card result-card--buy">
-                    <div class="result-card__label">Buy Rate</div>
-                    <div class="result-card__value" id="res-buy-rate">₦1693.42</div>
+
+                <!-- New Cost -->
+                <div class="result-card result-card--<?= $calc_results['mode'] ?>">
+                    <div class="result-card__label">New Cost</div>
+                    <div class="result-card__formula">
+                        <?php if ($calc_results['mode'] === 'buy'): ?>
+                            <?= qc_val($calc_inputs, 'normal_rate') ?> + <?= qc_val($calc_inputs, 'cost') ?>
+                        <?php else: ?>
+                            <?= qc_val($calc_inputs, 'cost') ?> - <?= qc_val($calc_inputs, 'normal_rate') ?>
+                        <?php endif; ?>
+                    </div>
+                    <div class="result-card__value"><?= number_format($calc_results['new_cost'], 4) ?></div>
                 </div>
+
+                <!-- Buy/Sell Rate -->
+                <div class="result-card result-card--<?= $calc_results['mode'] ?>">
+                    <div class="result-card__label"><?= ucfirst($calc_results['mode']) ?> Rate</div>
+                    <div class="result-card__formula">
+                        (new_cost × <?= qc_val($calc_inputs, 'constant') ?>) ÷ <?= number_format($calc_results['quantity'], 6) ?>
+                    </div>
+                    <div class="result-card__value"><?= number_format($calc_results['rate'], 4) ?></div>
+                </div>
+
+                <!-- Profit -->
                 <div class="result-card result-card--margin">
-                    <div class="result-card__label">Profit Margin</div>
-                    <div class="result-card__value" id="res-margin">1.01%</div>
+                    <div class="result-card__label">Profit</div>
+                    <div class="result-card__formula">
+                        <?php if ($calc_results['mode'] === 'buy'): ?>
+                            (buy_rate - <?= qc_val($calc_inputs, 'normal_rate') ?>) ÷ 2
+                        <?php else: ?>
+                            (<?= qc_val($calc_inputs, 'normal_rate') ?> - sell_rate) ÷ 2
+                        <?php endif; ?>
+                    </div>
+                    <div class="result-card__value"><?= number_format($calc_results['profit'], 4) ?></div>
                 </div>
+
+                <!-- Final Buy/Sell -->
                 <div class="result-card result-card--profit">
-                    <div class="result-card__label">Profit Amount</div>
-                    <div class="result-card__value" id="res-profit">₦180.00</div>
+                    <div class="result-card__label"><?= $calc_results['final_label'] ?></div>
+                    <div class="result-card__formula">
+                        <?php if ($calc_results['mode'] === 'buy'): ?>
+                            buy_rate - profit
+                        <?php else: ?>
+                            sell_rate + profit
+                        <?php endif; ?>
+                    </div>
+                    <div class="result-card__value"><?= number_format($calc_results['final'], 4) ?></div>
                 </div>
             </div>
 
-            <div class="calc-actions">
-                <button class="btn-save-rate" onclick="saveRate()">Save Rate</button>
-                <button class="btn-use-trade" onclick="useInTrade()">Use in Trade</button>
+                        <div class="calc-actions">
+                <form method="POST" action="" style="flex:1;">
+                    <input type="hidden" name="action" value="save_quick_rate">
+                    <input type="hidden" name="constant" value="<?= qc_val($calc_inputs, 'constant') ?>">
+                    <input type="hidden" name="normal_rate" value="<?= qc_val($calc_inputs, 'normal_rate') ?>">
+                    <input type="hidden" name="cost" value="<?= qc_val($calc_inputs, 'cost') ?>">
+                    <button type="submit" class="btn-save-rate">Save Rate</button>
+                </form>
+                <a href="calculator.php" class="btn-use-trade">Full Calculator</a>
             </div>
+            <?php else: ?>
+            <div class="calc-placeholder">
+                Enter the 3 values above and click <strong>Calculate</strong>
+            </div>
+            <?php endif; ?>
+
         </div>
 
-    </main><!-- /main -->
-</div><!-- /app -->
-
-<script>
-// ── Calculator logic ──────────────────────────────────────────
-let mode = 'buy'; // 'buy' | 'sell'
-
-function setMode(m) {
-    mode = m;
-    document.getElementById('btn-buy').className  = 'btn-toggle ' + (m === 'buy'  ? 'btn-toggle--buy'  : 'btn-toggle--sell');
-    document.getElementById('btn-sell').className = 'btn-toggle ' + (m === 'sell' ? 'btn-toggle--buy'  : 'btn-toggle--sell');
-    calculate();
-}
-
-function calculate() {
-    const amount = parseFloat(document.getElementById('calc-amount').value) || 0;
-    const rate   = parseFloat(document.getElementById('calc-rate').value)   || 1;
-
-    // USDT quantity
-    const usdt = amount / rate;
-
-    // Spread: buy at 0.5% above rate, sell at 0.5% below
-    const spread = mode === 'buy' ? 1.005 : 0.995;
-    const effectiveRate = rate * spread;
-
-    // Buy/sell rate (what we actually charge)
-    const tradeRate = effectiveRate;
-
-    // Profit margin %
-    const margin = Math.abs(spread - 1) * 100;
-
-    // Profit in ₦
-    const profit = usdt * Math.abs(rate - effectiveRate);
-
-    document.getElementById('res-usdt').textContent     = usdt.toFixed(4);
-    document.getElementById('res-buy-rate').textContent = '₦' + tradeRate.toFixed(2);
-    document.getElementById('res-margin').textContent   = margin.toFixed(2) + '%';
-    document.getElementById('res-profit').textContent   = '₦' + profit.toFixed(2);
-}
-
-function saveRate() {
-    const rate = document.getElementById('calc-rate').value;
-    // In production: AJAX POST to rates controller
-    alert('Rate ₦' + rate + ' saved!');
-}
-
-function useInTrade() {
-    // In production: redirect to trade page with pre-filled rate
-    window.location.href = 'rates.php?rate=' + document.getElementById('calc-rate').value;
-}
-
-// Run on load
-calculate();
-</script>
 
 </body>
 </html>

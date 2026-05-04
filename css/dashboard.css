@@ -592,3 +592,88 @@
     transition: border-color 0.18s, background 0.18s;
 }
 .btn-use-trade:hover { border-color: var(--blue-primary); background: var(--blue-light); color: var(--blue-primary); }
+
+/* ============================================================
+   Quick Calculator — Formula & Active State Additions
+   ============================================================ */
+
+/* Active state for toggle buttons */
+.btn-toggle.active {
+    opacity: 1 !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.btn-toggle:not(.active) {
+    opacity: 0.5;
+}
+
+/* Formula text (mirrors calculator.php) */
+.result-card__formula {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.72rem;
+    color: var(--text-muted, #888);
+    background: var(--bg-page, #f4f5f7);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 4px;
+    padding: 3px 8px;
+    display: inline-block;
+    margin: 4px 0 6px;
+}
+
+/* 3-column input grid for quick calc */
+.calc-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+/* Results grid - 5 columns for quick calc */
+.calc-results {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+/* Base result card color */
+.result-card--base {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+}
+.result-card--base .result-card__value {
+    color: #3b82f6;
+}
+
+/* Sell result card color */
+.result-card--sell {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+}
+.result-card--sell .result-card__value {
+    color: #ef4444;
+}
+
+/* Placeholder state */
+.calc-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted, #888);
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .calc-results {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+@media (max-width: 768px) {
+    .calc-inputs {
+        grid-template-columns: 1fr;
+    }
+    .calc-results {
+        grid-template-columns: 1fr 1fr;
+    }
+}
