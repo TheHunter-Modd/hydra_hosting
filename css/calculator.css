@@ -1,0 +1,264 @@
+/* ============================================================
+   css/calculator.css
+============================================================ */
+
+.calc-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+.calc-page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+.calc-page-sub {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+.live-rate-badge {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 8px 16px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+}
+.live-rate-badge::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+    animation: livepulse 2s infinite;
+}
+@keyframes livepulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+}
+
+/* ── Form card ───────────────────────────────────────────── */
+.calc-form-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 20px;
+}
+.calc-form-card h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* 3-column grid */
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.field-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.var-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--blue-light);
+    border: 1px solid var(--blue-mid);
+    border-radius: 4px;
+    padding: 2px 8px;
+    color: var(--blue-primary);
+    font-weight: 500;
+}
+.field-input {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--bg-page);
+    border: 1.5px solid var(--border-input);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+}
+.field-input:focus {
+    outline: none;
+    background: #fff;
+    border-color: var(--blue-primary);
+    box-shadow: 0 0 0 3px rgba(59,110,248,0.1);
+}
+.field-input::placeholder {
+    color: var(--text-muted);
+    font-weight: 400;
+    font-size: 0.875rem;
+}
+
+/* Buttons */
+.form-actions {
+    display: flex;
+    gap: 12px;
+}
+.btn-submit {
+    flex: 1;
+    padding: 13px;
+    background: var(--blue-primary);
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    box-shadow: 0 3px 10px rgba(59,110,248,0.3);
+    transition: background 0.18s, transform 0.1s;
+}
+.btn-submit:hover  { background: var(--blue-hover); transform: translateY(-1px); }
+.btn-submit:active { transform: translateY(0); }
+.btn-submit svg { width: 17px; height: 17px; }
+
+.btn-reset {
+    padding: 13px 22px;
+    background: #fff;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--border-input);
+    cursor: pointer;
+    display: flex; align-items: center; gap: 7px;
+    transition: border-color 0.18s, color 0.18s;
+}
+.btn-reset:hover { border-color: var(--text-primary); color: var(--text-primary); }
+.btn-reset svg { width: 15px; height: 15px; }
+
+/* ── Error ───────────────────────────────────────────────── */
+.calc-errors {
+    background: var(--red-light);
+    border: 1px solid #fca5a5;
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    margin-bottom: 20px;
+}
+.calc-errors p { font-size: 0.875rem; color: var(--red); line-height: 1.7; }
+
+/* ── Results grid ────────────────────────────────────────── */
+.results-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+}
+
+.result-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Header strip */
+.result-card__header {
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.result-card--base  .result-card__header { background: var(--blue-light);  border-bottom: 1px solid var(--blue-mid); }
+.result-card--buy   .result-card__header { background: #dcfce7; border-bottom: 1px solid #bbf7d0; }
+.result-card--sell  .result-card__header { background: #fee2e2; border-bottom: 1px solid #fca5a5; }
+
+.result-card__icon {
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.result-card--base  .result-card__icon { background: var(--blue-mid); color: var(--blue-primary); }
+.result-card--buy   .result-card__icon { background: #bbf7d0; color: var(--green); }
+.result-card--sell  .result-card__icon { background: #fca5a5; color: var(--red); }
+.result-card__icon svg { width: 17px; height: 17px; }
+
+.result-card__title { font-size: 0.9rem; font-weight: 700; }
+.result-card--base  .result-card__title { color: var(--blue-primary); }
+.result-card--buy   .result-card__title { color: var(--green); }
+.result-card--sell  .result-card__title { color: var(--red); }
+
+/* Body rows */
+.result-card__body { padding: 18px; }
+
+.result-row {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+.result-row:first-child { padding-top: 0; }
+.result-row:last-child  { border-bottom: none; padding-bottom: 0; }
+
+.result-row__label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+.result-row__formula {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    display: inline-block;
+    margin: 2px 0;
+}
+.result-row__value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+}
+.result-card--base  .result-row__value { color: var(--blue-primary); }
+.result-card--buy   .result-row__value { color: var(--green); }
+.result-card--sell  .result-row__value { color: var(--red); }
+
+/* ── Placeholder ─────────────────────────────────────────── */
+.results-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 52px 0;
+    color: var(--text-muted);
+}
+.results-placeholder svg {
+    width: 48px; height: 48px;
+    margin: 0 auto 14px;
+    opacity: 0.25;
+}
+.results-placeholder p { font-size: 0.9rem; line-height: 1.7; }
