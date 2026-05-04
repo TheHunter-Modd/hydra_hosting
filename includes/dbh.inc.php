@@ -1,8 +1,7 @@
 <?php
 // ============================================================
 //  includes/dbh.inc.php
-//  PDO database connection — provides $pdo to all files
-//  that require_once this file.
+//  PDO database connection — Works with BOTH MySQL & Postgres
 // ============================================================
 
 require_once __DIR__ . '/config_env.php';
@@ -10,16 +9,18 @@ require_once __DIR__ . '/config_env.php';
 // Load .env file from project root
 loadEnv(__DIR__ . '/../.env');
 
-$host    = $_ENV['DB_HOST'] ?? '127.0.0.1';
-$port    = $_ENV['DB_PORT'] ?? '3307';
-$dbname  = $_ENV['DB_NAME'] ?? '';
-$dbuser  = $_ENV['DB_USER'] ?? 'root';
-$dbpass  = $_ENV['DB_PASS'] ?? '';
-$charset = $_ENV['DB_CHARSET'] ?? 'utf8mb4';
+// CHANGED: Default to Postgres settings now
+ $host    = $_ENV['DB_HOST'] ?? '127.0.0.1';
+ $port    = $_ENV['DB_PORT'] ?? '5432';       // Postgres default port
+ $dbname  = $_ENV['DB_NAME'] ?? '';
+ $dbuser  = $_ENV['DB_USER'] ?? 'root';
+ $dbpass  = $_ENV['DB_PASS'] ?? '';
+ $charset = $_ENV['DB_CHARSET'] ?? 'utf8';
 
-$dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=$charset";
+// CHANGED: 'mysql:' becomes 'pgsql:'
+ $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;charset=$charset";
 
-$options = [
+ $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     PDO::ATTR_EMULATE_PREPARES   => false,
