@@ -29,7 +29,7 @@ function auth_create_user(PDO $pdo, string $username, string $email, string $pho
         VALUES (?, ?, ?, ?, NOW())
     ");
     $stmt->execute([$username, $email, $phone, $hashed_pwd]);
-    return (int) $pdo->lastInsertId();
+    return (int) $pdo->lastInsertId('users_id_seq'); // Postgres sequence name
 }
 
 // Check if email already exists (ignore NULL/empty)
