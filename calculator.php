@@ -8,8 +8,8 @@ if (!isset($_SESSION['user_id'])) {
 
 require_once 'includes/calculator_contr.inc.php';
 
-$user_name = htmlspecialchars($_SESSION['user_name'] ?? 'Trader');
-$user_abbr = strtoupper(substr($user_name, 0, 2));
+ $user_name = htmlspecialchars($_SESSION['user_name'] ?? 'Trader');
+ $user_abbr = strtoupper(substr($user_name, 0, 2));
 
 function v(array $inputs, string $key): string {
     return htmlspecialchars($inputs[$key] ?? '');
@@ -22,8 +22,8 @@ function v(array $inputs, string $key): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rate Calculator — Hydra P2P</title>
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css\dashboard.css">
-    <link rel="stylesheet" href="css\calculator.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/calculator.css">
 </head>
 <body>
 <div class="app">
@@ -130,6 +130,21 @@ function v(array $inputs, string $key): string {
             <div class="live-rate-badge">Live Market Rate: ₦1,685</div>
         </div>
 
+        <!-- ══ SUCCESS MESSAGE (NEW) ═════════════════════════ -->
+        <?php if ($save_success): ?>
+        <div class="calc-success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <div>
+                <strong>Rates Saved!</strong>
+                <span>Buy and Sell rates have been saved. <a href="rates.php">View My Rates →</a></span>
+            </div>
+        </div>
+        <?php endif; ?>
+
         <!-- ── INPUT FORM (3 inputs only) ─────────────── -->
         <div class="calc-form-card">
             <h2>Input Values</h2>
@@ -143,6 +158,7 @@ function v(array $inputs, string $key): string {
             <?php endif; ?>
 
             <form method="POST" action="calculator.php" id="calc-form">
+                <input type="hidden" name="action" value="calculate">
                 <div class="input-grid">
 
                     <div class="field-group">
@@ -196,6 +212,30 @@ function v(array $inputs, string $key): string {
         <div class="results-area">
 
         <?php if ($results): ?>
+
+            <!-- ══ SAVE RATE BUTTON (NEW) ══════════════════ -->
+            <div class="save-rate-bar">
+                <div class="save-rate-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <span>Save this rate to view later in <strong>My Rates</strong></span>
+                </div>
+                <form method="POST" action="calculator.php" id="save-form">
+                    <input type="hidden" name="action" value="save_rate">
+                    <input type="hidden" name="constant" value="<?= v($inputs, 'constant') ?>">
+                    <input type="hidden" name="normal_rate" value="<?= v($inputs, 'normal_rate') ?>">
+                    <input type="hidden" name="cost" value="<?= v($inputs, 'cost') ?>">
+                    <button type="submit" class="btn-save-rate">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        Save Rate
+                    </button>
+                </form>
+            </div>
 
             <!-- BASE -->
             <div class="result-card result-card--base">

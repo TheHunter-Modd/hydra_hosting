@@ -1,18 +1,14 @@
 <?php
 // ============================================================
 //  includes/rates_model.inc.php
-//  Responsibility: ALL database reads/writes for My Rates.
-//  Returns raw rows only. No calculations. No HTML.
-//
-//  DB columns (exact — do NOT assume extras):
-//    id, user_id, rate, mode, saved_at
+//  DB columns: id, user_id, rate, normal_rate, cost, new_cost, mode, saved_at
 // ============================================================
 
 
-// ── Fetch all rates for the logged-in user ────────────────────
+// ── Fetch all rates ───────────────────────────────────────────
 function rates_get_all(PDO $pdo, int $user_id): array {
     $stmt = $pdo->prepare("
-        SELECT id, rate, mode, saved_at
+        SELECT id, rate, normal_rate, cost, new_cost, mode, saved_at
         FROM   rates
         WHERE  user_id = ?
         ORDER  BY saved_at DESC
@@ -22,7 +18,7 @@ function rates_get_all(PDO $pdo, int $user_id): array {
 }
 
 
-// ── Delete one rate row (user_id guard prevents cross-deletion) ─
+// ── Delete one rate row ───────────────────────────────────────
 function rates_delete(PDO $pdo, int $id, int $user_id): bool {
     $stmt = $pdo->prepare("
         DELETE FROM rates
@@ -30,4 +26,14 @@ function rates_delete(PDO $pdo, int $id, int $user_id): bool {
     ");
     $stmt->execute([$id, $user_id]);
     return $stmt->rowCount() > 0;
+}
+
+
+// ── Save rate (includes new_cost) ─────────────────────────────
+function rates_save(PDO $pdo, int $user_id, float $final_rate, float $normal_rate, float $cost, float $new_cost, string $mode): bool {
+    $stmt = $pdo->prepare("
+        INSERT INTO rates (user_id, rate, normal_rate, cost, new_cost, mode, saved_at)
+        VALUES (?, ?, ?, ?, ?, ?, NOW())
+    ");
+    return $stmt->execute([$user_id, $final_rate, $normal_rate, $cost, $new_cost, $mode]);
 }

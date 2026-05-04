@@ -228,7 +228,7 @@ function qty(float $v): string { return number_format($v, 2); }
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                                        <tbody>
                 <?php foreach ($filtered as $row): ?>
                 <tr>
                     <!-- FROM DB: saved_at -->
@@ -259,20 +259,22 @@ function qty(float $v): string { return number_format($v, 2); }
                         <?php endif; ?>
                     </td>
 
-                    <!-- MOCKED: amount -->
+                    <!-- FROM DB: new_cost (Amount) -->
                     <td class="td-mono"><?= ngn($row['amount']) ?></td>
 
-                    <!-- FROM DB: rate (normal_rate) -->
-                    <td class="td-mono"><?= ngn($row['rate']) ?></td>
+                    <!-- FROM DB: normal_rate -->
+                    <td class="td-mono"><?= ngn($row['normal_rate']) ?></td>
 
                     <!-- CALCULATED: quantity -->
                     <td class="td-mono"><?= qty($row['quantity']) ?></td>
 
-                    <!-- CALCULATED: display_rate (final buy or sell) -->
-                    <td class="td-mono"><?= ngn($row['display_rate']) ?></td>
+                    <!-- FROM DB: rate = final_buy or final_sell -->
+                    <td class="td-mono"><?= ngn($row['rate']) ?></td>
 
                     <!-- CALCULATED: profit -->
-                    <td class="td-profit"><?= ngn($row['profit']) ?></td>
+                    <td class="td-profit <?= $row['profit'] >= 0 ? '' : 'td-profit--negative' ?>">
+                        <?= $row['profit'] >= 0 ? '+' : '' ?><?= ngn($row['profit']) ?>
+                    </td>
 
                     <!-- MOCKED: payment -->
                     <td><?= htmlspecialchars($row['payment']) ?></td>
