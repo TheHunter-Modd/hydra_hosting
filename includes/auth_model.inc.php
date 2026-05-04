@@ -19,6 +19,11 @@ function auth_get_user_by_credential(PDO $pdo, string $credential): array|false 
 
 // Insert a new user on registration
 function auth_create_user(PDO $pdo, string $username, string $email, string $phone, string $hashed_pwd): int {
+    
+    // Convert empty strings to NULL so UNIQUE constraints don't block new users
+    $email = $email === '' ? null : $email;
+    $phone = $phone === '' ? null : $phone;
+
     $stmt = $pdo->prepare("
         INSERT INTO users (username, email, phone, pwd, created_at)
         VALUES (?, ?, ?, ?, NOW())
@@ -27,15 +32,17 @@ function auth_create_user(PDO $pdo, string $username, string $email, string $pho
     return (int) $pdo->lastInsertId();
 }
 
-// Check if email already exists
+// Check if email already exists (ignore NULL/empty)
 function auth_email_exists(PDO $pdo, string $email): bool {
+    if (empty($email)) return false;
     $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ? LIMIT 1");
     $stmt->execute([$email]);
     return (bool) $stmt->fetch();
 }
 
-// Check if phone already exists
+// Check if phone already exists (ignore NULL/empty)
 function auth_phone_exists(PDO $pdo, string $phone): bool {
+    if (empty($phone)) return false;
     $stmt = $pdo->prepare("SELECT id FROM users WHERE phone = ? LIMIT 1");
     $stmt->execute([$phone]);
     return (bool) $stmt->fetch();
