@@ -18,7 +18,7 @@ loadEnv(__DIR__ . '/../.env');
  $charset = $_ENV['DB_CHARSET'] ?? 'utf8';
 
 // CHANGED: 'mysql:' becomes 'pgsql:'
- $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;charset=$charset";
+  $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
 
  $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
