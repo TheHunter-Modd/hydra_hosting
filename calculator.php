@@ -14,7 +14,24 @@ require_once 'includes/calculator_contr.inc.php';
 function v(array $inputs, string $key): string {
     return htmlspecialchars($inputs[$key] ?? '');
 }
+
+// ── Live Rate for Calculator ──────────────────────────────
+ $calc_live_rate = '₦1,685';
+ $calc_rate_time = $_SESSION['live_rate_time'] ?? 0;
+
+if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
+    require_once 'includes/rate_api_model.inc.php';
+    $api_res = get_live_usdt_ngn_rate();
+    if ($api_res['success'] && $api_res['price'] > 0) {
+        $_SESSION['live_rate_value'] = $api_res['price'];
+        $_SESSION['live_rate_time']  = time();
+        $calc_live_rate = '₦' . number_format($api_res['price'], 2);
+    }
+} else {
+    $calc_live_rate = '₦' . number_format($_SESSION['live_rate_value'] ?? 1685, 2);
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,8 +65,8 @@ function v(array $inputs, string $key): string {
                 Live USDT Rate
             </div>
             <div>
-                <span class="rate-value">₦1,685</span>
-                <span class="rate-change">+2.3%</span>
+                <span class="rate-value"><?= $calc_live_rate ?></span>
+                <span class="rate-change"><?= $rate_change ?></span>
             </div>
         </div>
 

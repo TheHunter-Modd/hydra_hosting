@@ -14,8 +14,37 @@ if (!isset($_SESSION['user_id'])) {
 $user_name  = htmlspecialchars($_SESSION['user_name'] ?? 'Trader');
 $user_abbr  = strtoupper(substr($user_name, 0, 2));
 
-$live_rate       = '₦1,685';
-$rate_change     = '+2.3%';
+// ── Live Rate Fetching (Cached for 10 minutes) ──────────────
+ $live_rate       = '₦1,685'; // Default fallback
+ $rate_change     = '+0.0%';  // Default fallback
+ $rate_fetched_at = $_SESSION['live_rate_time'] ?? 0;
+
+// If we don't have a rate, or it's older than 10 minutes (600 seconds), fetch new one
+if (!$rate_fetched_at || (time() - $rate_fetched_at) > 600) {
+    require_once 'includes/rate_api_model.inc.php';
+    $api_result = get_live_usdt_ngn_rate();
+    
+    if ($api_result['success'] && $api_result['price'] > 0) {
+        $old_rate = $_SESSION['live_rate_value'] ?? $api_result['price'];
+        
+        // Calculate percentage change
+        if ($old_rate > 0) {
+            $change = (($api_result['price'] - $old_rate) / $old_rate) * 100;
+            $rate_change = ($change >= 0 ? '+' : '') . number_format($change, 1) . '%';
+        }
+        
+        // Save to session
+        $_SESSION['live_rate_value'] = $api_result['price'];
+        $_SESSION['live_rate_time']  = time();
+        
+        $live_rate = '₦' . number_format($api_result['price'], 2);
+    }
+} else {
+    // We have a cached rate, use it
+    $cached_price = $_SESSION['live_rate_value'] ?? 1685;
+    $live_rate = '₦' . number_format($cached_price, 2);
+}
+
 $total_trades    = '92';
 $trades_change   = '+12%';
 $success_rate    = '75%';
