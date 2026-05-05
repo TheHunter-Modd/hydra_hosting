@@ -399,62 +399,35 @@ function qc_val(array $arr, string $key): string {
                 <button type="submit" class="btn-save-rate" style="margin-bottom: 20px; width: 100%;">Calculate</button>
             </form>
 
-            <?php if ($calc_results): ?>
+                       <?php if ($calc_results): ?>
             <div class="calc-results">
                 <!-- Quantity (Base) -->
                 <div class="result-card result-card--base">
                     <div class="result-card__label">Quantity</div>
-                    <div class="result-card__formula">
-                        (<?= qc_val($calc_inputs, 'cost') ?> × <?= qc_val($calc_inputs, 'constant') ?>) ÷ <?= qc_val($calc_inputs, 'normal_rate') ?>
-                    </div>
                     <div class="result-card__value"><?= number_format($calc_results['quantity'], 6) ?></div>
                 </div>
 
                 <!-- New Cost -->
                 <div class="result-card result-card--<?= $calc_results['mode'] ?>">
                     <div class="result-card__label">New Cost</div>
-                    <div class="result-card__formula">
-                        <?php if ($calc_results['mode'] === 'buy'): ?>
-                            <?= qc_val($calc_inputs, 'normal_rate') ?> + <?= qc_val($calc_inputs, 'cost') ?>
-                        <?php else: ?>
-                            <?= qc_val($calc_inputs, 'cost') ?> - <?= qc_val($calc_inputs, 'normal_rate') ?>
-                        <?php endif; ?>
-                    </div>
                     <div class="result-card__value"><?= number_format($calc_results['new_cost'], 4) ?></div>
                 </div>
 
                 <!-- Buy/Sell Rate -->
                 <div class="result-card result-card--<?= $calc_results['mode'] ?>">
                     <div class="result-card__label"><?= ucfirst($calc_results['mode']) ?> Rate</div>
-                    <div class="result-card__formula">
-                        (new_cost × <?= qc_val($calc_inputs, 'constant') ?>) ÷ <?= number_format($calc_results['quantity'], 6) ?>
-                    </div>
                     <div class="result-card__value"><?= number_format($calc_results['rate'], 4) ?></div>
                 </div>
 
                 <!-- Profit -->
                 <div class="result-card result-card--margin">
                     <div class="result-card__label">Profit</div>
-                    <div class="result-card__formula">
-                        <?php if ($calc_results['mode'] === 'buy'): ?>
-                            (buy_rate - <?= qc_val($calc_inputs, 'normal_rate') ?>) ÷ 2
-                        <?php else: ?>
-                            (<?= qc_val($calc_inputs, 'normal_rate') ?> - sell_rate) ÷ 2
-                        <?php endif; ?>
-                    </div>
                     <div class="result-card__value"><?= number_format($calc_results['profit'], 4) ?></div>
                 </div>
 
                 <!-- Final Buy/Sell -->
                 <div class="result-card result-card--profit">
                     <div class="result-card__label"><?= $calc_results['final_label'] ?></div>
-                    <div class="result-card__formula">
-                        <?php if ($calc_results['mode'] === 'buy'): ?>
-                            buy_rate - profit
-                        <?php else: ?>
-                            sell_rate + profit
-                        <?php endif; ?>
-                    </div>
                     <div class="result-card__value"><?= number_format($calc_results['final'], 4) ?></div>
                 </div>
             </div>

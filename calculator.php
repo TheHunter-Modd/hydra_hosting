@@ -266,7 +266,7 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
                 </form>
             </div>
 
-            <!-- BASE -->
+                    <!-- BASE -->
             <div class="result-card result-card--base">
                 <div class="result-card__header">
                     <div class="result-card__icon">
@@ -281,9 +281,6 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
                 <div class="result-card__body">
                     <div class="result-row">
                         <div class="result-row__label">quantity</div>
-                        <div class="result-row__formula">
-                            (<?= v($inputs,'cost') ?> × <?= v($inputs,'constant') ?>) ÷ <?= v($inputs,'normal_rate') ?>
-                        </div>
                         <div class="result-row__value">
                             <?= number_format($results['quantity'], 6) ?>
                         </div>
@@ -291,7 +288,7 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
                 </div>
             </div>
 
-            <!-- BUY -->
+                       <!-- BUY -->
             <div class="result-card result-card--buy">
                 <div class="result-card__header">
                     <div class="result-card__icon">
@@ -307,9 +304,6 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
 
                     <div class="result-row">
                         <div class="result-row__label">new_cost</div>
-                        <div class="result-row__formula">
-                            <?= v($inputs,'normal_rate') ?> + <?= v($inputs,'cost') ?>
-                        </div>
                         <div class="result-row__value">
                             <?= number_format($results['buy']['new_cost'], 4) ?>
                         </div>
@@ -317,9 +311,6 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
 
                     <div class="result-row">
                         <div class="result-row__label">buy_rate &nbsp;<small style="font-weight:400;font-size:0.68rem;">(my_rate)</small></div>
-                        <div class="result-row__formula">
-                            (new_cost × <?= v($inputs,'constant') ?>) ÷ quantity
-                        </div>
                         <div class="result-row__value">
                             <?= number_format($results['buy']['buy_rate'], 4) ?>
                         </div>
@@ -327,9 +318,6 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
 
                     <div class="result-row">
                         <div class="result-row__label">profit &nbsp;<small style="font-weight:400;font-size:0.68rem;">(remainder)</small></div>
-                        <div class="result-row__formula">
-                            (buy_rate − <?= v($inputs,'normal_rate') ?>) ÷ 2
-                        </div>
                         <div class="result-row__value">
                             <?= number_format($results['buy']['profit'], 4) ?>
                         </div>
@@ -337,9 +325,6 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
 
                     <div class="result-row">
                         <div class="result-row__label">final_buy</div>
-                        <div class="result-row__formula">
-                            buy_rate − profit
-                        </div>
                         <div class="result-row__value">
                             <?= number_format($results['buy']['final_buy'], 4) ?>
                         </div>
@@ -348,7 +333,7 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
                 </div>
             </div>
 
-            <!-- SELL -->
+                     <!-- SELL -->
             <div class="result-card result-card--sell">
                 <div class="result-card__header">
                     <div class="result-card__icon">
@@ -364,9 +349,6 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
 
                     <div class="result-row">
                         <div class="result-row__label">new_cost</div>
-                        <div class="result-row__formula">
-                            <?= v($inputs,'cost') ?> − <?= v($inputs,'normal_rate') ?>
-                        </div>
                         <div class="result-row__value">
                             <?= number_format($results['sell']['new_cost'], 4) ?>
                         </div>
@@ -374,9 +356,6 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
 
                     <div class="result-row">
                         <div class="result-row__label">sell_rate &nbsp;<small style="font-weight:400;font-size:0.68rem;">(my_rate)</small></div>
-                        <div class="result-row__formula">
-                            (new_cost × <?= v($inputs,'constant') ?>) ÷ quantity
-                        </div>
                         <div class="result-row__value">
                             <?= number_format($results['sell']['sell_rate'], 4) ?>
                         </div>
@@ -384,9 +363,6 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
 
                     <div class="result-row">
                         <div class="result-row__label">profit &nbsp;<small style="font-weight:400;font-size:0.68rem;">(remainder)</small></div>
-                        <div class="result-row__formula">
-                            (<?= v($inputs,'normal_rate') ?> − sell_rate) ÷ 2
-                        </div>
                         <div class="result-row__value">
                             <?= number_format($results['sell']['profit'], 4) ?>
                         </div>
@@ -394,9 +370,6 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
 
                     <div class="result-row">
                         <div class="result-row__label">final_sell</div>
-                        <div class="result-row__formula">
-                            sell_rate + profit
-                        </div>
                         <div class="result-row__value">
                             <?= number_format($results['sell']['final_sell'], 4) ?>
                         </div>
