@@ -1,0 +1,354 @@
+/* ============================================================
+   css/responsive.css
+   Mobile-first responsive overrides for the entire app.
+   Loaded AFTER global.css and page-specific CSS to ensure overrides work.
+============================================================ */
+
+/* ── SIDEBAR: Mobile Toggle ──────────────────────────────── */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        width: 280px; /* Slightly wider on mobile for better UX */
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 16px;
+    }
+}
+
+/* Overlay behind sidebar on mobile */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 90;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* Hide sidebar text on very small screens to keep it clean */
+@media (max-width: 480px) {
+    .sidebar__brand-text { display: none; }
+    .sidebar__rate { display: none; }
+    .sidebar__user { display: none; }
+}
+
+/* ── DASHBOARD: Mobile ─────────────────────────────────── */
+
+/* Page Header */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .page-header__title { font-size: 1.35rem; }
+    .last-updated { display: none; } /* Hide on mobile to save space */
+}
+
+/* Stat Cards */
+@media (max-width: 1024px) {
+    .stat-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
+@media (max-width: 540px) {
+    .stat-row {
+        grid-template-columns: 1fr;
+    }
+    .stat-card__value { font-size: 1.4rem; }
+}
+
+/* Middle Row */
+@media (max-width: 1024px) {
+    .mid-row {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 540px) {
+    .trader-card { padding: 20px; }
+    .trader-card__avatar { width: 44px; height: 44px; }
+    .tracker-card .circular-progress svg { width: 80px; height: 80px; }
+    .circular-time { font-size: 0.95rem; }
+}
+
+/* Quick Calculator */
+@media (max-width: 768px) {
+    .calc-header {
+        flex-direction: column;
+        gap: 14px;
+        align-items: flex-start;
+    }
+    .calc-toggle { width: 100%; }
+    .calc-toggle .btn-toggle { flex: 1; text-align: center; justify-content: center; }
+    .calc-results {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    .result-card { padding: 12px; }
+    .result-card__value { font-size: 1rem; }
+}
+
+@media (max-width: 480px) {
+    .calc-results {
+        grid-template-columns: 1fr;
+    }
+    .calc-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── CALCULATOR PAGE: Mobile ──────────────────────────────── */
+
+/* Page Header */
+@media (max-width: 768px) {
+    .calc-page-header {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .calc-page-title { font-size: 1.5rem; }
+    .live-rate-badge {
+        align-self: flex-start;
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+}
+
+/* Input Grid */
+@media (max-width: 768px) {
+    .input-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    .form-actions { flex-direction: column; }
+    .btn-reset { width: 100%; justify-content: center; }
+    .btn-submit svg { display: none; }
+}
+
+/* Results Area */
+@media (max-width: 1024px) {
+    .results-area {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    .save-rate-bar {
+        flex-direction: column;
+        gap: 14px;
+    }
+    .save-rate-info {
+        justify-content: center;
+        text-align: center;
+        font-size: 0.85rem;
+    }
+    .btn-save-rate {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .result-card__body { padding: 14px; }
+    .result-row__value { font-size: 1.1rem; }
+}
+
+/* Success Message */
+@media (max-width: 480px) {
+    .calc-success {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    .calc-success svg { margin: 0 auto; }
+}
+
+/* ── RATES PAGE: Mobile ──────────────────────────────────── */
+
+/* Header */
+@media (max-width: 768px) {
+    .rates-header {
+        flex-direction: column;
+        gap: 14px;
+        margin-bottom: 20px;
+    }
+    .rates-title { font-size: 1.5rem; }
+    .btn-export {
+        width: 100%;
+        justify-content: center;
+    }
+    .btn-export svg { display: none; }
+}
+
+/* Stats Row */
+@media (max-width: 1024px) {
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
+@media (max-width: 540px) {
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+    .stat-box { padding: 16px; }
+    .stat-box__value { font-size: 1.4rem; }
+}
+
+/* Toolbar */
+@media (max-width: 768px) {
+    .rates-toolbar {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .search-wrap { width: 100%; }
+    .filter-btns {
+        order: -1; /* Move search to top on mobile */
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+        padding-bottom: 4px;
+    }
+    .filter-btn {
+        white-space: nowrap;
+        padding: 7px 14px;
+    }
+}
+
+/* Table */
+@media (max-width: 768px) {
+    .rates-table-card {
+        margin: 0 -16px; /* Remove card padding to save space */
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+    
+    .rates-table { font-size: 0.82rem; }
+    .rates-table th, 
+    .rates-table td {
+        padding: 12px;
+    }
+}
+
+/* Empty State */
+@media (max-width: 480px) {
+    .table-empty { padding: 30px 16px; }
+}
+
+/* ── GLOBAL MOBILE UTILITIES ──────────────────────────────── */
+
+/* Hide desktop elements on mobile */
+@media (max-width: 768px) {
+    .sidebar__profile-name,
+    .sidebar__profile-role {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100px;
+    }
+}
+
+/* Prevent horizontal scroll bounce on iOS */
+.app {
+    overflow-x: hidden;
+}
+
+/* Smooth scrolling on mobile */
+@media (max-width: 768px) {
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Hamburger Button (injected by JS) */
+.mobile-header {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 95;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .mobile-header {
+        display: flex;
+    }
+    
+    .main {
+        padding-top: 0; /* Header handles top spacing */
+    }
+    
+    .main .page-header,
+    .main .calc-page-header,
+    .main .rates-header {
+        margin-top: 0;
+    }
+}
+
+.mobile-header__brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mobile-header__logo {
+    width: 32px;
+    height: 32px;
+    background: var(--blue-primary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.mobile-header__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.hamburger-btn {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+}
+.hamburger-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--text-primary);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}

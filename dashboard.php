@@ -450,6 +450,72 @@ function qc_val(array $arr, string $key): string {
 
         </div>
 
+        <!-- MOBILE SIDEBAR TOGGLE (Global - works on all pages) -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+<script>
+// ── Mobile Sidebar Toggle (Auto-injected on all pages) ────────────
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    if (!sidebar || window.innerWidth > 768) return;
+
+    // Inject mobile header with hamburger button
+    const mobileHeader = document.createElement('div');
+    mobileHeader.className = 'mobile-header';
+    mobileHeader.innerHTML = `
+        <div class="mobile-header__brand">
+            <div class="mobile-header__logo">H</div>
+            <span class="mobile-header__title">${document.title || 'Hydra P2P'}</span>
+            <button class="hamburger-btn" id="sidebarToggle" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24">
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </button>
+        </div>
+    `;
+
+    document.body.prepend(mobileHeader);
+
+    // Toggle function
+    function toggleSidebar() {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+    }
+
+    // Button click
+    document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
+
+    // Overlay click to close
+    overlay.addEventListener('click', toggleSidebar);
+
+    // Close sidebar when window resizes to desktop
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            if (mobileHeader) mobileHeader.style.display = 'none';
+        } else {
+            if (mobileHeader) mobileHeader.style.display = 'flex';
+        }
+    });
+
+    // Handle dynamic page changes (SPA-like behavior)
+    const observer = new MutationObserver(() => {
+        if (window.innerWidth <= 768) {
+            if (mobileHeader) mobileHeader.style.display = 'flex';
+        } else {
+            if (mobileHeader) mobileHeader.style.display = 'none';
+        }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+});
+</script>
 </body>
 </html>
