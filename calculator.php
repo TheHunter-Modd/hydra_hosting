@@ -17,18 +17,30 @@ function v(array $inputs, string $key): string {
 
 // ── Live Rate for Calculator ──────────────────────────────
  $calc_live_rate = '₦1,685';
+ $rate_change   = '+0.0%';
  $calc_rate_time = $_SESSION['live_rate_time'] ?? 0;
 
 if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
     require_once 'includes/rate_api_model.inc.php';
     $api_res = get_live_usdt_ngn_rate();
+    
     if ($api_res['success'] && $api_res['price'] > 0) {
+        $old_rate = $_SESSION['live_rate_value'] ?? $api_res['price'];
+        
+        // Calculate percentage change
+        if ($old_rate > 0) {
+            $change = (($api_res['price'] - $old_rate) / $old_rate) * 100;
+            $rate_change = ($change >= 0 ? '+' : '') . number_format($change, 1) . '%';
+        }
+        
         $_SESSION['live_rate_value'] = $api_res['price'];
         $_SESSION['live_rate_time']  = time();
+        
         $calc_live_rate = '₦' . number_format($api_res['price'], 2);
     }
 } else {
-    $calc_live_rate = '₦' . number_format($_SESSION['live_rate_value'] ?? 1685, 2);
+    $cached_price = $_SESSION['live_rate_value'] ?? 1685;
+    $calc_live_rate = '₦' . number_format($cached_price, 2);
 }
 ?>
 
@@ -144,7 +156,7 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
                 <h1 class="calc-page-title">Rate Calculator</h1>
                 <p class="calc-page-sub">Enter 3 values — quantity, buy and sell results are all calculated automatically</p>
             </div>
-            <div class="live-rate-badge">Live Market Rate: ₦1,685</div>
+            <div class="live-rate-badge">Live Market Rate: <?= $calc_live_rate ?></div>
         </div>
 
         <!-- ══ SUCCESS MESSAGE (NEW) ═════════════════════════ -->
