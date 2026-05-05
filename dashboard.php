@@ -1,5 +1,5 @@
 <?php
-require_once 'includes\config_session.inc.php';
+require_once 'includes/config_session.inc.php';
 require_once 'includes/dashboard_contr.inc.php';
 
 // Auth guard
@@ -49,8 +49,8 @@ function qc_val(array $arr, string $key): string {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard — Hydra P2P</title>
-    <link rel="stylesheet" href="css\global.css">
-    <link rel="stylesheet" href="css\dashboard.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
 
