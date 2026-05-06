@@ -7,7 +7,7 @@
 /* ── Google Font ─────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 /* Load responsive overrides after everything else */
-@import url('responsive.css');
+
 
 /* ── Custom Properties ───────────────────────────────────── */
 :root {
@@ -262,8 +262,3 @@ img    { display: block; max-width: 100%; }
     overflow-x: hidden;
 }
 
-/* ============================================================
-   MOBILE SIDEBAR TOGGLE SCRIPT
-============================================================ */
-
-/* Placed in global.css so it works on ALL pages without touching PHP files */
