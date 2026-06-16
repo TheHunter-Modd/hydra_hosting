@@ -17,7 +17,7 @@ unset($_SESSION['active_tab']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hydra — P2P Crypto Trading</title>
+    <title>Hydra — P2P Rate Calculator</title>
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/auth.css">
 </head>
@@ -29,7 +29,7 @@ unset($_SESSION['active_tab']);
     <div class="auth-brand">
         <div class="auth-brand__logo">H</div>
         <div class="auth-brand__name">Hydra</div>
-        <div class="auth-brand__tagline">P2P Crypto Trading Platform</div>
+        <div class="auth-brand__tagline">P2P Rate Calculator</div>
     </div>
 
     <!-- ── Card ─────────────────────────────────────────── -->

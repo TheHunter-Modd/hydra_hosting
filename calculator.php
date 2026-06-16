@@ -63,7 +63,7 @@ if (!$calc_rate_time || (time() - $calc_rate_time) > 600) {
             <div class="sidebar__logo">H</div>
             <div class="sidebar__brand-text">
                 <div class="brand-name">Hydra</div>
-                <div class="brand-sub">P2P Trading</div>
+                <div class="brand-sub">P2P Rate</div>
             </div>
         </div>
 

@@ -1,7 +1,7 @@
 <?php
 // ============================================================
 //  includes/auth_model.inc.php
-//  Database queries for authentication.
+//  Database queries for authentication. (MySQL version)
 //  No HTML. No logic. Returns raw data only.
 // ============================================================
 
@@ -29,7 +29,7 @@ function auth_create_user(PDO $pdo, string $username, string $email, string $pho
         VALUES (?, ?, ?, ?, NOW())
     ");
     $stmt->execute([$username, $email, $phone, $hashed_pwd]);
-    return (int) $pdo->lastInsertId('users_id_seq'); // Postgres sequence name
+    return (int) $pdo->lastInsertId(); // MySQL auto-increment
 }
 
 // Check if email already exists (ignore NULL/empty)

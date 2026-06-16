@@ -95,7 +95,7 @@ function qc_val(array $arr, string $key): string {
             <div class="sidebar__logo">H</div>
             <div class="sidebar__brand-text">
                 <div class="brand-name">Hydra</div>
-                <div class="brand-sub">P2P Trading</div>
+                <div class="brand-sub">P2P Rate</div>
             </div>
         </div>
 
@@ -208,7 +208,7 @@ function qc_val(array $arr, string $key): string {
         <div class="page-header">
             <div>
                 <h1 class="page-header__title">Welcome back, <?= $user_name ?></h1>
-                <p class="page-header__sub">Here's your P2P trading overview</p>
+                <p class="page-header__sub">Here's your P2P overview</p>
             </div>
             <div class="last-updated">
                 Last Updated
